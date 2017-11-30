@@ -4,13 +4,12 @@
 
     <parent>
         <groupId>ru.anr</groupId>
-        <artifactId>config.java</artifactId>
-        <version>0.9-SNAPSHOT</version>
+        <artifactId>base.platform.parent</artifactId>
+        <version>0.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>base.R</artifactId>
 
-    <version>1.0.0</version>
     <name>Base R service</name>
 
     <licenses>
@@ -40,7 +39,6 @@
         <dependency>
             <groupId>ru.anr</groupId>
             <artifactId>base.services</artifactId>
-            <version>${base.version}</version>
         </dependency>
         <dependency>
             <groupId>org.nuiton.thirdparty</groupId>
@@ -56,7 +54,6 @@
         <dependency>
             <groupId>ru.anr</groupId>
             <artifactId>base.tests</artifactId>
-            <version>${base.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -64,7 +61,6 @@
 
     <properties>
         <rjava.version>0.9-9</rjava.version>
-        <base.version>0.5-SNAPSHOT</base.version>
     </properties>
 
 </project>

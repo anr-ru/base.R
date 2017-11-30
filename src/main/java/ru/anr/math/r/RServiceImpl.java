@@ -91,7 +91,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
             List<BigDecimal> v = (List<BigDecimal>) value;
             engine.assign(name, toArray(v.stream()));
         } else {
-            throw new ApplicationException("Unable to set the variable " + name + " of type " + value.getClass());
+            throw new ApplicationException("Unable to set the variable " + name + " of type "
+                    + ((value == null) ? "null" : value.getClass()));
         }
     }
 

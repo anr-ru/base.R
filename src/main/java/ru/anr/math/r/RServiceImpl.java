@@ -53,7 +53,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
     @Override
     public <S> Map<String, RResult> eval(Map<String, S> variables, List<String> scripts, String... outputNames) {
 
-        Assert.notNull(engine, "R Engine not initializer");
+        Assert.notNull(engine, "R Engine not initialized");
 
         variables.forEach((k, v) -> assignVariable(k, v));
 

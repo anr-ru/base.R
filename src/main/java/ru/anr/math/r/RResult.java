@@ -32,6 +32,11 @@ public class RResult extends BaseParent {
 
     /**
      * The main constructor
+     * 
+     * @param name
+     *            The name of a variable
+     * @param r
+     *            The value of the variable
      */
     public RResult(String name, REXP r) {
 

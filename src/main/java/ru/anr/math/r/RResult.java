@@ -4,7 +4,7 @@
 package ru.anr.math.r;
 
 import java.math.BigDecimal;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.rosuda.JRI.REXP;
@@ -60,41 +60,31 @@ public class RResult extends BaseParent {
      */
     public BigDecimal asDecimal() {
 
-        return new BigDecimal(r.asDouble());
+        return scale(new BigDecimal(r.asDouble()), 8);
+    }
+
+    /**
+     * @return the result value as a string
+     */
+    public String asString() {
+
+        return r.asString();
     }
 
     /**
      * @return the result as a big decimal array
      */
-    public BigDecimal[] asDecimals() {
+    public List<BigDecimal> asDecimals() {
 
         double[] array = r.asDoubleArray();
-        return list(ArrayUtils.toObject(array)).stream().map(v -> new BigDecimal(v)).toArray(BigDecimal[]::new);
+        return list(list(ArrayUtils.toObject(array)).stream().map(v -> scale(new BigDecimal(v), 8)));
     }
 
     /**
      * @return the result as an integer array
      */
-    public Integer[] asIntegers() {
+    public List<String> asStrings() {
 
-        int[] array = r.asIntArray();
-        return list(ArrayUtils.toObject(array)).stream().map(v -> Integer.valueOf(v)).toArray(Integer[]::new);
-    }
-
-    /**
-     * @return the result as an integer array
-     */
-    public String[] asStrings() {
-
-        return r.asStringArray();
-    }
-
-    /**
-     * @return the result as a big decimal array
-     */
-    @SuppressWarnings("unchecked")
-    public <S> Vector<S> asVector() {
-
-        return r.asVector();
+        return list(r.asStringArray());
     }
 }

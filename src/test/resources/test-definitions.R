@@ -7,6 +7,7 @@
 # A global variable
 pp <<- c(1,2,3,4,5);
 
+globb <<- c(1,2);
 
 sx <<- c('1', '2', '3')
 sxx <<- c("1", "2", "3")

@@ -77,7 +77,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         engine.eval("eval(parse(text=\"" + script + "\"))");
 
-        return list(outputNames).stream().map(n -> new RResult(n, engine.eval(n)))
+        return list(outputNames).stream()//
+                .map(n -> new RResult(n, engine.eval(n)))//
                 .collect(Collectors.toMap(RResult::getName, r -> r));
     }
 
@@ -96,20 +97,42 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
             BigDecimal v = (BigDecimal) value;
             engine.assign(name, new double[]{ v.doubleValue() });
 
-        } else if (value instanceof BigDecimal[]) {
+        } else if (value instanceof String) {
 
-            BigDecimal[] v = (BigDecimal[]) value;
-            engine.assign(name, toArray(list(v).stream()));
+            engine.assign(name, (String) value);
 
         } else if (value instanceof List<?>) {
 
-            @SuppressWarnings("unchecked")
-            List<BigDecimal> v = (List<BigDecimal>) value;
-            engine.assign(name, toArray(v.stream()));
+            Class<?> clazz = getItemClass((List<?>) value);
+
+            if (clazz.isAssignableFrom(String.class)) {
+                @SuppressWarnings("unchecked")
+                List<String> v = (List<String>) value;
+                engine.assign(name, toString(v.stream()));
+
+            } else if (clazz.isAssignableFrom(BigDecimal.class)) {
+                @SuppressWarnings("unchecked")
+                List<BigDecimal> v = (List<BigDecimal>) value;
+                engine.assign(name, toDouble(v.stream()));
+            } else {
+                throw new ApplicationException("Unsupported type of list items: " + value.getClass());
+            }
         } else {
             throw new ApplicationException("Unable to set the variable " + name + " of type "
                     + ((value == null) ? "null" : value.getClass()));
         }
+    }
+
+    /**
+     * Determines the class of the list's item
+     * 
+     * @param values
+     *            A list variable
+     * @return The resulted found class
+     */
+    public static Class<?> getItemClass(List<?> values) {
+
+        return values.get(0).getClass();
     }
 
     /**
@@ -119,8 +142,13 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      *            A stream
      * @return The resulted array
      */
-    private double[] toArray(Stream<BigDecimal> stream) {
+    private double[] toDouble(Stream<BigDecimal> stream) {
 
         return ArrayUtils.toPrimitive(stream.map(i -> i.doubleValue()).toArray(Double[]::new));
+    }
+
+    private String[] toString(Stream<String> stream) {
+
+        return stream.toArray(String[]::new);
     }
 }

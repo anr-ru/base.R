@@ -8,3 +8,7 @@
 # func - an exported function
 
 rs <- sum( func(x, 2) );
+
+print(sx);
+
+

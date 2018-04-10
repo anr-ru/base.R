@@ -3,6 +3,7 @@
  */
 package ru.anr.math.cfd;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -43,7 +44,13 @@ public class RTest extends BaseTestCase {
     @Test
     public void main() {
 
-        Map<String, RResult> rs = service.eval(toMap("x", d(12.45)), list(FUNCS), "rs");
+        Map<String, RResult> rs = service.eval(toMap("x", d(12.45)), list(FUNCS), "rs", "pp", "sx", "sxx");
         Assert.assertEquals(d("186.75"), rs.get("rs").asDecimal());
+
+        Assert.assertArrayEquals(new BigDecimal[]{ d("1"), d("2"), d("3"), d("4"), d("5") },
+                rs.get("pp").asDecimals());
+
+        Assert.assertArrayEquals(new String[]{ "1", "2", "3" }, rs.get("sx").asStrings());
+        Assert.assertArrayEquals(new String[]{ "1", "2", "3" }, rs.get("sxx").asStrings());
     }
 }

@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.rosuda.JRI.Rengine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import ru.anr.base.ApplicationException;
@@ -26,6 +28,11 @@ import ru.anr.base.services.BaseServiceImpl;
  */
 
 public class RServiceImpl extends BaseServiceImpl implements RService {
+
+    /**
+     * The logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(RServiceImpl.class);
 
     /**
      * The main rJava library
@@ -58,6 +65,15 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
         variables.forEach((k, v) -> assignVariable(k, v));
 
         String script = list(scripts).stream().map(f -> readAsString(f)).collect(Collectors.joining("\n"));
+
+        /*
+         * Screen the " symbols
+         */
+        script = script.replaceAll("\"", "'");
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("The script to invoke:\n{}", script);
+        }
 
         engine.eval("eval(parse(text=\"" + script + "\"))");
 

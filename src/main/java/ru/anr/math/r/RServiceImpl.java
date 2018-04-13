@@ -49,7 +49,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         // R initialization
         Rengine.versionCheck();
-        engine = new Rengine(new String[]{ "--no-save" }, false, new DefaultConsole());
+        engine = new Rengine(new String[]{ "--no-save", "--quiet" }, false, new DefaultConsole());
 
         engine.waitForR();
     }
@@ -64,7 +64,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         variables.forEach((k, v) -> assignVariable(k, v));
 
-        String script = list(scripts).stream().map(f -> readAsString(f)).collect(Collectors.joining("\n"));
+        String script = list(scripts).stream().map(f -> getScript(f)).collect(Collectors.joining("\n"));
 
         /*
          * Screen the " symbols
@@ -72,14 +72,42 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
         script = script.replaceAll("\"", "'");
 
         if (logger.isDebugEnabled()) {
-            logger.debug("The script to invoke:\n{}", script);
+            logger.debug("Inputs:");
+            variables.forEach((k, v) -> {
+                logger.debug("{}={}", k, v);
+            });
+        }
+
+        if (logger.isTraceEnabled()) {
+            logger.trace("The script to invoke:\n{}", script);
         }
 
         engine.eval("eval(parse(text=\"" + script + "\"))");
 
-        return list(outputNames).stream()//
+        Map<String, RResult> rs = list(outputNames).stream()//
                 .map(n -> new RResult(n, engine.eval(n)))//
                 .collect(Collectors.toMap(RResult::getName, r -> r));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Outputs:");
+            rs.forEach((k, v) -> {
+                logger.debug("{}={}", k, v);
+            });
+        }
+        return rs;
+    }
+
+    /**
+     * Loads a script from the given file or use the path variable as a script
+     * itself.
+     * 
+     * @param path
+     *            Possible a path to an R-file or just a script.
+     * @return Script data
+     */
+    private String getScript(String path) {
+
+        return path.contains(".R") ? readAsString(path) : path;
     }
 
     /**
@@ -147,6 +175,13 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
         return ArrayUtils.toPrimitive(stream.map(i -> i.doubleValue()).toArray(Double[]::new));
     }
 
+    /**
+     * Converts a stream of {@link String} to an array of strings
+     * 
+     * @param stream
+     *            A stream
+     * @return The resulted arrays
+     */
     private String[] toString(Stream<String> stream) {
 
         return stream.toArray(String[]::new);

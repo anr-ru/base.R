@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.rosuda.JRI.REXP;
 
+import ru.anr.base.ApplicationException;
 import ru.anr.base.BaseParent;
 
 /**
@@ -77,7 +78,16 @@ public class RResult extends BaseParent {
     public List<BigDecimal> asDecimals() {
 
         double[] array = r.asDoubleArray();
-        return list(list(ArrayUtils.toObject(array)).stream().map(v -> scale(new BigDecimal(v), 8)));
+        return list(list(ArrayUtils.toObject(array)).stream()
+                .map(v -> Double.isNaN(v) || Double.isInfinite(v) ? null : scale(new BigDecimal(v), 8)));
+    }
+
+    /**
+     * @return returns the value as a double matrix
+     */
+    public double[][] asDecimalMatrix() {
+
+        return r.asDoubleMatrix();
     }
 
     /**
@@ -87,4 +97,57 @@ public class RResult extends BaseParent {
 
         return list(r.asStringArray());
     }
+
+    /**
+     * @return the result as an integer array
+     */
+    public List<Integer> asIntegers() {
+
+        int[] array = r.asIntArray();
+        return list(list(ArrayUtils.toObject(array)).stream().map(v -> Integer.valueOf(v)));
+    }
+
+    /**
+     * A universal point for getting value based on its type.
+     * 
+     * @return The value
+     */
+    @SuppressWarnings("unchecked")
+    public <S> S value() {
+
+        S v = null;
+        switch (this.r.getType()) {
+            case REXP.XT_ARRAY_STR:
+                v = (S) asStrings();
+                break;
+            case REXP.XT_ARRAY_INT:
+                v = (S) asIntegers();
+                break;
+            case REXP.XT_ARRAY_DOUBLE:
+                v = (S) asDecimals();
+                break;
+            case REXP.XT_DOUBLE:
+                v = (S) asDecimal();
+                break;
+            case REXP.XT_STR:
+                v = (S) asString();
+                break;
+            case REXP.XT_NULL:
+                v = null;
+                break;
+            default:
+                throw new ApplicationException("Unsupported R value type (" + this.r.getType() + ")");
+        }
+        return v;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+
+        return "RResult [name=" + name + ", type=" + r.getType() + ", value=" + this.value() + "]";
+    }
+
 }

@@ -32,7 +32,7 @@ public class DefaultConsole implements RMainLoopCallbacks {
     @Override
     public void rWriteConsole(Rengine re, String text, int oType) {
 
-        logger.debug("R: {}", text);
+        logger.debug("{}", text);
     }
 
     /**

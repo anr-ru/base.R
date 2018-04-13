@@ -18,11 +18,11 @@ import org.springframework.context.annotation.Configuration;
 public class RConfig {
 
     /**
-     * Creation of the bean
+     * Creation of the bean.
      * 
      * @return A bean instance
      */
-    @Bean
+    @Bean(name = "rservice")
     public RService bean() {
 
         return new RServiceImpl();

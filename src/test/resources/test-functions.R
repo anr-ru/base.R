@@ -6,6 +6,9 @@
 func <- function(x,y) {
 	
 	print(x);
+	
+	stored <<- stored + 1;
+	
 	return (x * pp);
 }
 

@@ -107,7 +107,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      */
     private String getScript(String path) {
 
-        return path.contains(".R") ? readAsString(path) : path;
+        return path.endsWith(".R") ? readAsString(path) : path;
     }
 
     /**

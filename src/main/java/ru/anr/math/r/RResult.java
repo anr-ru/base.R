@@ -49,6 +49,14 @@ public class RResult extends BaseParent {
     }
 
     /**
+     * @return true, if it is a null value
+     */
+    public boolean isNull() {
+
+        return this.r == null;
+    }
+
+    /**
      * @return the name
      */
     public String getName() {
@@ -80,6 +88,14 @@ public class RResult extends BaseParent {
         double[] array = r.asDoubleArray();
         return list(list(ArrayUtils.toObject(array)).stream()
                 .map(v -> Double.isNaN(v) || Double.isInfinite(v) ? null : scale(new BigDecimal(v), 8)));
+    }
+
+    /**
+     * @return the result as an array of double values
+     */
+    public double[] asDoubles() {
+
+        return r.asDoubleArray();
     }
 
     /**
@@ -147,7 +163,10 @@ public class RResult extends BaseParent {
     @Override
     public String toString() {
 
-        return "RResult [name=" + name + ", type=" + r.getType() + ", value=" + this.value() + "]";
+        Object v = (r == null) ? null : value();
+        return (v == null) ? //
+                "RResult [name=" + name + ", type=null, value=null]" : //
+                "RResult [name=" + name + ", type=" + r.getType() + ", value=" + this.value() + "]";
     }
 
 }

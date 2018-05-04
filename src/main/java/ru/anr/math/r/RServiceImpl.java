@@ -47,6 +47,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         super.init();
 
+        logger.info("Starting R Engine ...");
+
         // R initialization
         Rengine.versionCheck();
         engine = new Rengine(new String[]{ "--no-save", "--quiet" }, false, new DefaultConsole());

@@ -134,18 +134,21 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
         } else if (value instanceof List<?>) {
 
             Class<?> clazz = getItemClass((List<?>) value);
-
-            if (clazz.isAssignableFrom(String.class)) {
-                @SuppressWarnings("unchecked")
-                List<String> v = (List<String>) value;
-                engine.assign(name, toString(v.stream()));
-
-            } else if (clazz.isAssignableFrom(BigDecimal.class)) {
-                @SuppressWarnings("unchecked")
-                List<BigDecimal> v = (List<BigDecimal>) value;
-                engine.assign(name, toDouble(v.stream()));
+            if (clazz == null) {
+                engine.assign(name, new String[]{});
             } else {
-                throw new ApplicationException("Unsupported type of list items: " + value.getClass());
+                if (clazz.isAssignableFrom(String.class)) {
+                    @SuppressWarnings("unchecked")
+                    List<String> v = (List<String>) value;
+                    engine.assign(name, toString(v.stream()));
+
+                } else if (clazz.isAssignableFrom(BigDecimal.class)) {
+                    @SuppressWarnings("unchecked")
+                    List<BigDecimal> v = (List<BigDecimal>) value;
+                    engine.assign(name, toDouble(v.stream()));
+                } else {
+                    throw new ApplicationException("Unsupported type of list items: " + value.getClass());
+                }
             }
         } else {
             throw new ApplicationException("Unable to set the variable " + name + " of type "
@@ -162,7 +165,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      */
     public static Class<?> getItemClass(List<?> values) {
 
-        return values.get(0).getClass();
+        return values.size() == 0 ? null : values.get(0).getClass();
     }
 
     /**

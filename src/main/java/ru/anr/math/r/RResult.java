@@ -67,6 +67,14 @@ public class RResult extends BaseParent {
     /**
      * @return the result value as a double
      */
+    public double asDouble() {
+
+        return r.asDouble();
+    }
+
+    /**
+     * @return the result value as a double
+     */
     public BigDecimal asDecimal() {
 
         return scale(new BigDecimal(r.asDouble()), 8);

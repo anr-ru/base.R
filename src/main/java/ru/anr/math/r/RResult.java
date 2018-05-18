@@ -53,7 +53,7 @@ public class RResult extends BaseParent {
      */
     public boolean isNull() {
 
-        return this.r == null;
+        return this.r == null || this.r.rtype == REXP.XT_NULL;
     }
 
     /**
@@ -119,7 +119,7 @@ public class RResult extends BaseParent {
      */
     public List<String> asStrings() {
 
-        return list(r.asStringArray());
+        return isNull() ? null : list(r.asStringArray());
     }
 
     /**

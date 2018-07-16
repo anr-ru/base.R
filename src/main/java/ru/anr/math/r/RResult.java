@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.rosuda.JRI.REXP;
 
-import ru.anr.base.ApplicationException;
 import ru.anr.base.BaseParent;
 
 /**
@@ -77,7 +76,7 @@ public class RResult extends BaseParent {
      */
     public BigDecimal asDecimal() {
 
-        return scale(new BigDecimal(r.asDouble()), 8);
+        return convert(r.asDouble());
     }
 
     /**
@@ -94,8 +93,19 @@ public class RResult extends BaseParent {
     public List<BigDecimal> asDecimals() {
 
         double[] array = r.asDoubleArray();
-        return list(list(ArrayUtils.toObject(array)).stream()
-                .map(v -> Double.isNaN(v) || Double.isInfinite(v) ? null : scale(new BigDecimal(v), 8)));
+        return list(list(ArrayUtils.toObject(array)).stream().map(v -> convert(v)));
+    }
+
+    /**
+     * Convers a double value to a decimal taking into account Nan or Infinite
+     * values undefined for {@link BigDecimal}.
+     * 
+     * @param value
+     * @return
+     */
+    private BigDecimal convert(double value) {
+
+        return (Double.isNaN(value) || Double.isInfinite(value)) ? null : scale(new BigDecimal(value), 8);
     }
 
     /**
@@ -160,7 +170,7 @@ public class RResult extends BaseParent {
                 v = null;
                 break;
             default:
-                throw new ApplicationException("Unsupported R value type (" + this.r.getType() + ")");
+                v = (S) ("Unsupported R value type (" + this.r.getType() + ")");
         }
         return v;
     }

@@ -131,6 +131,10 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
             engine.assign(name, (String) value);
 
+        } else if (value instanceof Boolean) {
+
+            engine.assign(name, new boolean[]{ (Boolean) value });
+
         } else if (value instanceof List<?>) {
 
             Class<?> clazz = getItemClass((List<?>) value);

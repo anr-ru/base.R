@@ -76,7 +76,7 @@ public class RResult extends BaseParent {
      */
     public BigDecimal asDecimal() {
 
-        return convert(r.asDouble());
+        return convert((r == null) ? null : r.asDouble());
     }
 
     /**
@@ -84,7 +84,7 @@ public class RResult extends BaseParent {
      */
     public String asString() {
 
-        return r.asString();
+        return (r == null) ? null : r.asString();
     }
 
     /**
@@ -103,7 +103,7 @@ public class RResult extends BaseParent {
      * @param value
      * @return
      */
-    private BigDecimal convert(double value) {
+    private BigDecimal convert(Double value) {
 
         return (Double.isNaN(value) || Double.isInfinite(value)) ? null : scale(new BigDecimal(value), 8);
     }

@@ -13,8 +13,8 @@ before_install:
   - sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran35/'
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
   - sudo apt-get update
-  - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended
-  - sudo R CMD javareconf -n
+  - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
+  - sudo R CMD javareconf
   - sudo Rscript ./setup.R
 
 deploy:

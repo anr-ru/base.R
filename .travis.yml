@@ -7,16 +7,16 @@ cache:
   directories:
   - "$HOME/.cache"
 env:
-#  - R_HOME=/usr/local/lib/R LD_LIBRARY_PATH="$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
+  - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$R_HOME/library/rJava/jri:/usr/lib/R/site-library/rJava/jri:/usr/local/lib/R/site-library/rJava/jri:$LD_LIBRARY_PATH"
 before_install:
   - cp .travis.settings.xml $HOME/.m2/settings.xml
   - sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran35/'
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
   - sudo apt-get update
   - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
-  - echo $R_HOME
-  - cd $R_HOME && ls -al
-  - cd $R_HOME/site-library/ && ls -al
+  - cd /usr/lib/R/site-library/ && ls -al
+  - cd /usr/local/lib/R/site-library/ && ls -al
+  - cd /usr/lib/R/library/ && ls -al
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
 

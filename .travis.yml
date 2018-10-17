@@ -1,3 +1,4 @@
+dist: trusty
 sudo: false
 language: java
 services:
@@ -5,14 +6,18 @@ services:
 cache:
   directories:
   - "$HOME/.cache"
+env:
+# Unable to resolve the some libraries - JVM crash on tests
+  - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$JAVA_HOME/jre/lib:$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
 before_install:
   - cp .travis.settings.xml $HOME/.m2/settings.xml
-  - sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/'
+  - sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran35/'
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-  - sudo apt update
-  - sudo apt install -y r-base r-base-core r-recommended
-#  - sudo R CMD javareconf -e
+  - sudo apt-get update
+  - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
+  - sudo R CMD javareconf
   - sudo Rscript ./setup.R
+script: mvn test -B -DskipTests=true
 
 deploy:
   provider: script

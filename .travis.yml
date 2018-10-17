@@ -7,6 +7,7 @@ cache:
   directories:
   - "$HOME/.cache"
 env:
+# Unable to resolve the some libraries - JVM crash on tests
   - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$JAVA_HOME/jre/lib:$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
 before_install:
   - cp .travis.settings.xml $HOME/.m2/settings.xml
@@ -14,9 +15,9 @@ before_install:
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
   - sudo apt-get update
   - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
-  - ls -al /usr/lib/R/site-library/rJava/jri
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
+script: mvn test -B -DskipTests=true
 
 deploy:
   provider: script

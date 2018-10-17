@@ -7,8 +7,7 @@ cache:
   directories:
   - "$HOME/.cache"
 env:
-  - R_HOME=/usr/lib/R 
-  - LD_LIBRARY_PATH="$R_HOME/library/rJava/jri:$LD_LIBRARY_PATH"
+  - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$R_HOME/library/rJava/jri:$LD_LIBRARY_PATH"
 before_install:
   - cp .travis.settings.xml $HOME/.m2/settings.xml
   - sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran35/'

@@ -17,11 +17,11 @@ before_install:
   - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
-script: mvn test -B -DskipTests=true
+script: mvn test -B -DskipTests
 
 deploy:
   provider: script
-  script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
+  script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -DskipTests"
   skip_cleanup: true
   on:
     all_branches: true

@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/anr-ru/base.R.svg?branch=master)](https://travis-ci.org/anr-ru/base.R)
+
+
 ## [Base.Platform Project](https://github.com/anr-ru/base.platform.parent)
 
 ### Base.Platform.R

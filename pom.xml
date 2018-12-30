@@ -36,6 +36,21 @@
         </developer>
     </developers>
     
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+            <releases><enabled>true</enabled></releases>
+        </repository>
+        <repository>
+            <id>packagecloud-travis</id>
+            <name>Base Platform</name>
+            <url>https://packagecloud.io/ruanr/baseplatform/maven2</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+    </repositories>
+    
     <distributionManagement>
       <repository>
         <id>packagecloud-travis</id>

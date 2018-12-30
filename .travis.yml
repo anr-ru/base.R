@@ -13,7 +13,7 @@ stages:
   
 env:
 # Unable to resolve some libraries - JVM crash on tests
-  - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$JAVA_HOME/jre/lib:$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
+  - R_HOME=/usr/local/lib/R LD_LIBRARY_PATH="$JAVA_HOME/jre/lib:$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
 
 before_install:
   - cp ./.mvn/ci-settings.xml $HOME/.m2/settings.xml
@@ -23,6 +23,7 @@ before_install:
   - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
+  - whereis R
 
 test:
   provider: script

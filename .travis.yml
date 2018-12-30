@@ -6,22 +6,35 @@ services:
 cache:
   directories:
   - "$HOME/.cache"
+  
+stages:
+  - test
+  - deploy
+  
 env:
-# Unable to resolve the some libraries - JVM crash on tests
+# Unable to resolve some libraries - JVM crash on tests
   - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$JAVA_HOME/jre/lib:$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
+
 before_install:
-  - cp .travis.settings.xml $HOME/.m2/settings.xml
+  - cp ./.mvn/ci-settings.xml $HOME/.m2/settings.xml
   - sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran35/'
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
   - sudo apt-get update
   - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
-script: mvn test -B -DskipTests
+
+test:
+  provider: script
+  script: "mvn -P ci install"
+  skip_cleanup: false
+  on:
+    all_branches: true
 
 deploy:
   provider: script
-  script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -DskipTests"
-  skip_cleanup: true
+  script: "mvn -P ci deploy"
+  skip_cleanup: false
+  condition: "$TRAVIS_TAG = ^v.*$"
   on:
-    all_branches: true
+    tags: true

@@ -23,7 +23,8 @@ before_install:
   - sudo apt-get install -y r-base r-base-dev r-base-core r-recommended r-cran-rjava
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
-  - whereis R
+  - ls -al $R_HOME
+  - ls -al $R_HOME/site-library/rJava/jri
 
 test:
   provider: script

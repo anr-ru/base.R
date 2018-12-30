@@ -49,6 +49,19 @@
       </snapshotRepository>
     </distributionManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <configuration>
+                <forkMode>once</forkMode>
+                <argLine>-Djava.library.path=${env.R_HOME}/site-library/rJava/jri/</argLine>
+              </configuration>              
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
 
         <dependency>

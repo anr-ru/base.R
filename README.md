@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.org/anr-ru/base.R.svg?branch=master)](https://travis-ci.org/anr-ru/base.R)
 
 
-## [Base.Platform Project](https://github.com/anr-ru/base.platform.parent)
+## A part of [Base.Platform Project](https://github.com/anr-ru/base.platform.parent)
 
-### Base.Platform.R
+### Base.R
 
-Base Services for R language integrations.
+Services for linking Java and R applications.
 
 To run tests please use: JUnit tests: RTest.java
 

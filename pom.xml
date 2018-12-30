@@ -5,12 +5,14 @@
     <parent>
         <groupId>ru.anr</groupId>
         <artifactId>base.platform.parent</artifactId>
-        <version>0.5-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>base.R</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 
-    <name>Base R service</name>
+    <name>Base R services</name>
+    <description>Some convenient wrappers for R routines invocation</description>
 
     <licenses>
         <license>

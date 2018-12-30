@@ -1,15 +1,14 @@
 dist: trusty
 sudo: false
 language: java
+jdk:
+  - oraclejdk8
+
 services:
 - docker
 cache:
   directories:
   - "$HOME/.cache"
-  
-stages:
-  - test
-  - deploy
   
 env:
   - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$JAVA_HOME/jre/lib:$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
@@ -23,13 +22,8 @@ before_install:
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
 
-test:
-  provider: script
 # For some reason, test are failed with JVM crash on Travis Ubuntu.  
-  script: "mvn -P ci install -DskipTests"
-  skip_cleanup: false
-  on:
-    all_branches: true
+script: "mvn -P ci install -DskipTests"
 
 deploy:
   provider: script

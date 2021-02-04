@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ru.anr.math.r;
 
 import java.math.BigDecimal;
@@ -35,25 +32,29 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
     private static final Logger logger = LoggerFactory.getLogger(RServiceImpl.class);
 
     /**
-     * The main rJava library
+     * The main rJava library: it's loaded one time per JVM
      */
-    private Rengine engine;
+    private static Rengine engine;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void init() {
+    public synchronized void init() {
 
         super.init();
 
-        logger.info("Starting R Engine ...");
+        if (engine == null) {
+            logger.info("Starting R Engine ...");
+            // R initialization
+            Rengine.versionCheck();
+            engine = new Rengine(new String[]{"--no-save", "--quiet"}, false, new DefaultConsole());
 
-        // R initialization
-        Rengine.versionCheck();
-        engine = new Rengine(new String[]{ "--no-save", "--quiet" }, false, new DefaultConsole());
-
-        engine.waitForR();
+            engine.waitForR();
+        }
+        else {
+            logger.info("R engine already loaded");
+        }
     }
 
     /**
@@ -64,9 +65,9 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         Assert.notNull(engine, "R Engine not initialized");
 
-        variables.forEach((k, v) -> assignVariable(k, v));
+        variables.forEach(this::assignVariable);
 
-        String script = list(scripts).stream().map(f -> getScript(f)).collect(Collectors.joining("\n"));
+        String script = list(scripts).stream().map(this::getScript).collect(Collectors.joining("\n"));
 
         /*
          * Screen the " symbols
@@ -86,15 +87,13 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         engine.eval("eval(parse(text=\"" + script + "\"))");
 
-        Map<String, RResult> rs = list(outputNames).stream()//
-                .map(n -> new RResult(n, engine.eval(n)))//
+        Map<String, RResult> rs = list(outputNames).stream()
+                .map(n -> new RResult(n, engine.eval(n)))
                 .collect(Collectors.toMap(RResult::getName, r -> r));
 
         if (logger.isDebugEnabled()) {
             logger.debug("Outputs:");
-            rs.forEach((k, v) -> {
-                logger.debug("{}={}", k, v);
-            });
+            rs.forEach((k, v) -> logger.debug("{}={}", k, v));
         }
         return rs;
     }
@@ -180,8 +179,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      * @return The resulted array
      */
     private double[] toDouble(Stream<BigDecimal> stream) {
-
-        return ArrayUtils.toPrimitive(stream.map(i -> i.doubleValue()).toArray(Double[]::new));
+        return ArrayUtils.toPrimitive(stream.map(BigDecimal::doubleValue).toArray(Double[]::new));
     }
 
     /**
@@ -192,7 +190,6 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      * @return The resulted arrays
      */
     private String[] toString(Stream<String> stream) {
-
         return stream.toArray(String[]::new);
     }
 }

@@ -1,4 +1,27 @@
+/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package ru.anr.math.r;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.rosuda.JRI.Rengine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
+import ru.anr.base.ApplicationException;
+import ru.anr.base.services.BaseServiceImpl;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -6,22 +29,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.rosuda.JRI.Rengine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
-
-import ru.anr.base.ApplicationException;
-import ru.anr.base.services.BaseServiceImpl;
-
 /**
  * An implementation of {@link RService}.
  *
- *
  * @author Alexey Romanchuk
  * @created Nov 30, 2017
- *
  */
 
 public class RServiceImpl extends BaseServiceImpl implements RService {
@@ -51,8 +63,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
             engine = new Rengine(new String[]{"--no-save", "--quiet"}, false, new DefaultConsole());
 
             engine.waitForR();
-        }
-        else {
+        } else {
             logger.info("R engine already loaded");
         }
     }
@@ -76,9 +87,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         if (logger.isDebugEnabled()) {
             logger.debug("Inputs:");
-            variables.forEach((k, v) -> {
-                logger.debug("{}={}", k, v);
-            });
+            variables.forEach((k, v) -> logger.debug("{}={}", k, v));
         }
 
         if (logger.isTraceEnabled()) {
@@ -101,9 +110,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
     /**
      * Loads a script from the given file or use the path variable as a script
      * itself.
-     * 
-     * @param path
-     *            Possible a path to an R-file or just a script.
+     *
+     * @param path Possible a path to an R-file or just a script.
      * @return Script data
      */
     private String getScript(String path) {
@@ -113,18 +121,16 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
     /**
      * Assigns the given value to the variable
-     * 
-     * @param name
-     *            The name of the variable
-     * @param value
-     *            The value of the variable
+     *
+     * @param name  The name of the variable
+     * @param value The value of the variable
      */
     private void assignVariable(String name, Object value) {
 
         if (value instanceof BigDecimal) {
 
             BigDecimal v = (BigDecimal) value;
-            engine.assign(name, new double[]{ v.doubleValue() });
+            engine.assign(name, new double[]{v.doubleValue()});
 
         } else if (value instanceof String) {
 
@@ -132,7 +138,7 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
         } else if (value instanceof Boolean) {
 
-            engine.assign(name, new boolean[]{ (Boolean) value });
+            engine.assign(name, new boolean[]{(Boolean) value});
 
         } else if (value instanceof List<?>) {
 
@@ -161,9 +167,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
     /**
      * Determines the class of the list's item
-     * 
-     * @param values
-     *            A list variable
+     *
+     * @param values A list variable
      * @return The resulted found class
      */
     public static Class<?> getItemClass(List<?> values) {
@@ -173,9 +178,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
     /**
      * Converts a stream of {@link BigDecimal} values to an array of doubles
-     * 
-     * @param stream
-     *            A stream
+     *
+     * @param stream A stream
      * @return The resulted array
      */
     private double[] toDouble(Stream<BigDecimal> stream) {
@@ -184,9 +188,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
 
     /**
      * Converts a stream of {@link String} to an array of strings
-     * 
-     * @param stream
-     *            A stream
+     *
+     * @param stream A stream
      * @return The resulted arrays
      */
     private String[] toString(Stream<String> stream) {

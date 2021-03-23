@@ -1,9 +1,7 @@
 /target
 
 /.settings
-.pmd
 .project
 .classpath
-/.checkstyle
 /.idea/
 *.iml

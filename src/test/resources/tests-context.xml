@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns:context="http://www.springframework.org/schema/context"
- xmlns:jpa="http://www.springframework.org/schema/data/jpa"
- xmlns:p="http://www.springframework.org/schema/p"
- xmlns:util="http://www.springframework.org/schema/util"
- xmlns:security="http://www.springframework.org/schema/security"
- xmlns:tx="http://www.springframework.org/schema/tx"
- xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-    http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+
+
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="messageConfig" 
-        class="ru.anr.base.services.MessagePropertiesConfig" 
-        p:paths-ref="messages"/>
-                
+    <bean id="messageConfig"
+          class="ru.anr.base.services.MessagePropertiesConfig"
+          p:paths-ref="messages"/>
+
     <util:list id="messages">
         <value>classpath:/messages/data</value>
     </util:list>
 
 
-    <bean class = "ru.anr.math.r.RConfig" />
+    <bean class="ru.anr.math.r.RConfig"/>
 
     <tx:annotation-driven/>
 

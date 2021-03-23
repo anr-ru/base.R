@@ -7,17 +7,17 @@
 # x - an external variable
 # func - an exported function
 
-rs <- sum( func(x, 2) );
+rs <- sum(func(x, 2));
 
 print(arr);
 
-out = (arr[1] + arr[2]);
+out <- (arr[1] + arr[2]);
 print(sx);
 
-str[2] = "Hm-Hm";
-str[3] = "Not Bad";
+str[2] <- "Hm-Hm";
+str[3] <- "Not Bad";
 
-dd = funcC(dx);
+dd <- funcC(dx);
 
 
 

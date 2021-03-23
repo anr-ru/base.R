@@ -1,23 +1,32 @@
-/**
- * 
+/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package ru.anr.math.r;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.rosuda.JRI.REXP;
+import ru.anr.base.BaseParent;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.rosuda.JRI.REXP;
-
-import ru.anr.base.BaseParent;
-
 /**
  * A simple wrapper around {@link REXP} values.
  *
- *
  * @author Alexey Romanchuk
  * @created Nov 30, 2017
- *
  */
 
 public class RResult extends BaseParent {
@@ -34,11 +43,9 @@ public class RResult extends BaseParent {
 
     /**
      * The main constructor
-     * 
-     * @param name
-     *            The name of a variable
-     * @param r
-     *            The value of the variable
+     *
+     * @param name The name of a variable
+     * @param r    The value of the variable
      */
     public RResult(String name, REXP r) {
 
@@ -93,15 +100,15 @@ public class RResult extends BaseParent {
     public List<BigDecimal> asDecimals() {
 
         double[] array = r.asDoubleArray();
-        return list(list(ArrayUtils.toObject(array)).stream().map(v -> convert(v)));
+        return list(list(ArrayUtils.toObject(array)).stream().map(this::convert));
     }
 
     /**
      * Convers a double value to a decimal taking into account Nan or Infinite
      * values undefined for {@link BigDecimal}.
-     * 
-     * @param value
-     * @return
+     *
+     * @param value the value
+     * @return The converted value
      */
     private BigDecimal convert(Double value) {
 
@@ -138,12 +145,12 @@ public class RResult extends BaseParent {
     public List<Integer> asIntegers() {
 
         int[] array = r.asIntArray();
-        return list(list(ArrayUtils.toObject(array)).stream().map(v -> Integer.valueOf(v)));
+        return list(list(ArrayUtils.toObject(array)).stream());
     }
 
     /**
      * A universal point for getting value based on its type.
-     * 
+     *
      * @return The value
      */
     @SuppressWarnings("unchecked")
@@ -167,7 +174,6 @@ public class RResult extends BaseParent {
                 v = (S) asString();
                 break;
             case REXP.XT_NULL:
-                v = null;
                 break;
             default:
                 v = (S) ("Unsupported R value type (" + this.r.getType() + ")");

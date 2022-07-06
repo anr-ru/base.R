@@ -40,9 +40,9 @@ public class RTest extends BaseTestCase {
         /*
          * 1. Input variables: a single value, arrays of string or decimals
          */
-        Map<String, Object> inputs = toMap("x", d(12.45), //
-                "arr", list(d("3.14"), d("2.72")), //
-                "str", list("Good", "So-So", "Bad"), //
+        Map<String, Object> inputs = toMap("x", d(12.45),
+                "arr", list(d("3.14"), d("2.72")),
+                "str", list("Good", "So-So", "Bad"),
                 "dx", list(d("1"), d("2")));
 
         /*
@@ -50,7 +50,7 @@ public class RTest extends BaseTestCase {
          * script before invocation. We should also specify output variables to
          * have them in the resulted map.
          */
-        Map<String, RResult> rs = service.eval(inputs, list(FUNCS), //
+        Map<String, RResult> rs = service.eval(inputs, list(FUNCS),
                 "rs", "pp", "sx", "sxx", "out", "str", "dx", "dd", "globb", "stored");
 
         /*
@@ -58,16 +58,16 @@ public class RTest extends BaseTestCase {
          */
 
         // 3.1 A single result - an internal variable or array
-        Assertions.assertEquals(d("186.75000000"), rs.get("rs").asDecimal());
+        Assertions.assertEquals(d("186.750000000000"), rs.get("rs").asDecimal());
         // NB: by default it's one element array.
-        Assertions.assertEquals(list(d("186.75000000")), rs.get("rs").value());
+        Assertions.assertEquals(list(d("186.750000000000")), rs.get("rs").value());
 
-        Assertions.assertEquals(d("5.86000000"), rs.get("out").asDecimal());
-        Assertions.assertEquals(//
-                list(d("1.00000000"), d("2.00000000"), d("3.00000000"), d("4.00000000"), d("5.00000000")),
+        Assertions.assertEquals(d("5.860000000000"), rs.get("out").asDecimal());
+        Assertions.assertEquals(
+                list(d("1.000000000000"), d("2.000000000000"), d("3.000000000000"), d("4.000000000000"), d("5.000000000000")),
                 rs.get("pp").asDecimals());
-        Assertions.assertEquals(//
-                list(d("1.00000000"), d("2.00000000"), d("3.00000000"), d("4.00000000"), d("5.00000000")),
+        Assertions.assertEquals(
+                list(d("1.000000000000"), d("2.000000000000"), d("3.000000000000"), d("4.000000000000"), d("5.000000000000")),
                 rs.get("pp").value());
 
         // 3.2 String arrays
@@ -82,16 +82,16 @@ public class RTest extends BaseTestCase {
         Assertions.assertEquals(list("Good", "Hm-Hm", "Not Bad"), rs.get("str").value());
 
         /*
-         * 3.4 But also a global assign operator <<- works inside of locally
+         * 3.4 But also a global assign operator <<- works inside locally
          * defined functions.
          */
-        Assertions.assertEquals(list(d("1.00000000"), d("200.00000000")), rs.get("dx").asDecimals());
-        Assertions.assertEquals(list(d("1.00000000"), d("100.00000000")), rs.get("dd").asDecimals());
+        Assertions.assertEquals(list(d("1.000000000000"), d("200.000000000000")), rs.get("dx").asDecimals());
+        Assertions.assertEquals(list(d("1.000000000000"), d("100.000000000000")), rs.get("dd").asDecimals());
 
-        Assertions.assertEquals(list(d("1.00000000"), d("100.00000000")), rs.get("globb").asDecimals());
+        Assertions.assertEquals(list(d("1.000000000000"), d("100.000000000000")), rs.get("globb").asDecimals());
 
         // 3.5 Stored value
-        Assertions.assertEquals(d("24.00000000"), rs.get("stored").asDecimal());
+        Assertions.assertEquals(d("24.000000000000"), rs.get("stored").asDecimal());
 
         /*
          * 4. Check the second invocation
@@ -99,6 +99,6 @@ public class RTest extends BaseTestCase {
         rs = service.eval(inputs, list(FUNCS), "rs", "pp", "sx", "sxx", "out", "str", "dx", "dd", "globb", "stored");
 
         // 4.1 Stored value is not changed between invocations
-        Assertions.assertEquals(d("24.00000000"), rs.get("stored").asDecimal());
+        Assertions.assertEquals(d("24.000000000000"), rs.get("stored").asDecimal());
     }
 }

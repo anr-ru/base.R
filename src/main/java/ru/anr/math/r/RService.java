@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -26,11 +26,10 @@ import java.util.Map;
  * @created Nov 30, 2017
  */
 public interface RService {
-
     /**
-     * Evaluation of R scripts.
+     * Evaluates R scripts.
      *
-     * @param variables   A map of variables (can be a {@link BigDecimal} value, or a
+     * @param variables   The map of variables (can be a {@link BigDecimal} value, or a
      *                    list/array of {@link BigDecimal})
      * @param scripts     Names of R files to be executed
      * @param outputNames The names of variables to be read after the execution

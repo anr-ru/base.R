@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -20,23 +20,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 /**
- * A configuration for used services.
+ * A configuration for the main service.
  *
  * @author Alexey Romanchuk
  * @created Nov 30, 2017
  */
 @Configuration
 public class RConfig {
-
     /**
      * Creation of the bean.
      *
      * @return A bean instance
      */
     @Bean(name = "rservice")
-    @Lazy(true)
+    @Lazy()
     public RService bean() {
-
         return new RServiceImpl();
     }
 }

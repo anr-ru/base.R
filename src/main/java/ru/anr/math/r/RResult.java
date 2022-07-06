@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -28,7 +28,6 @@ import java.util.List;
  * @author Alexey Romanchuk
  * @created Nov 30, 2017
  */
-
 public class RResult extends BaseParent {
 
     /**
@@ -48,7 +47,6 @@ public class RResult extends BaseParent {
      * @param r    The value of the variable
      */
     public RResult(String name, REXP r) {
-
         super();
         this.r = r;
         this.name = name;
@@ -58,7 +56,6 @@ public class RResult extends BaseParent {
      * @return true, if it is a null value
      */
     public boolean isNull() {
-
         return this.r == null || this.r.rtype == REXP.XT_NULL;
     }
 
@@ -66,31 +63,27 @@ public class RResult extends BaseParent {
      * @return the name
      */
     public String getName() {
-
         return name;
     }
 
     /**
-     * @return the result value as a double
+     * @return the result value as a double value
      */
     public double asDouble() {
-
         return r.asDouble();
     }
 
     /**
-     * @return the result value as a double
+     * @return the result value as a double value
      */
     public BigDecimal asDecimal() {
-
         return convert((r == null) ? null : r.asDouble());
     }
 
     /**
-     * @return the result value as a string
+     * @return the result value as a string value
      */
     public String asString() {
-
         return (r == null) ? null : r.asString();
     }
 
@@ -98,28 +91,25 @@ public class RResult extends BaseParent {
      * @return the result as a big decimal array
      */
     public List<BigDecimal> asDecimals() {
-
         double[] array = r.asDoubleArray();
         return list(list(ArrayUtils.toObject(array)).stream().map(this::convert));
     }
 
     /**
-     * Convers a double value to a decimal taking into account Nan or Infinite
+     * Converts the double value to the decimal taking into account NaN or Infinite
      * values undefined for {@link BigDecimal}.
      *
      * @param value the value
      * @return The converted value
      */
     private BigDecimal convert(Double value) {
-
-        return (Double.isNaN(value) || Double.isInfinite(value)) ? null : scale(new BigDecimal(value), 8);
+        return (Double.isNaN(value) || Double.isInfinite(value)) ? null : scale(new BigDecimal(value), 12);
     }
 
     /**
      * @return the result as an array of double values
      */
     public double[] asDoubles() {
-
         return r.asDoubleArray();
     }
 
@@ -127,7 +117,6 @@ public class RResult extends BaseParent {
      * @return returns the value as a double matrix
      */
     public double[][] asDecimalMatrix() {
-
         return r.asDoubleMatrix();
     }
 
@@ -135,7 +124,6 @@ public class RResult extends BaseParent {
      * @return the result as an integer array
      */
     public List<String> asStrings() {
-
         return isNull() ? null : list(r.asStringArray());
     }
 
@@ -143,7 +131,6 @@ public class RResult extends BaseParent {
      * @return the result as an integer array
      */
     public List<Integer> asIntegers() {
-
         int[] array = r.asIntArray();
         return list(list(ArrayUtils.toObject(array)).stream());
     }
@@ -186,7 +173,6 @@ public class RResult extends BaseParent {
      */
     @Override
     public String toString() {
-
         Object v = (r == null) ? null : value();
         return (v == null) ? //
                 "RResult [name=" + name + ", type=null, value=null]" : //

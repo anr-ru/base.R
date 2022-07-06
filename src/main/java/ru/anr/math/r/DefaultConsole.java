@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -24,7 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /**
- * An implementation of console callbacks.
+ * An implementation of console log callbacks.
  *
  * @author Alexey Romanchuk
  * @created Nov 30, 2017
@@ -35,13 +35,11 @@ public class DefaultConsole implements RMainLoopCallbacks {
 
     @Override
     public void rWriteConsole(Rengine re, String text, int oType) {
-
         logger.debug("{}", text);
     }
 
     @Override
     public void rBusy(Rengine re, int which) {
-
         logger.warn("rBusy({})", which);
     }
 
@@ -61,19 +59,16 @@ public class DefaultConsole implements RMainLoopCallbacks {
 
     @Override
     public void rShowMessage(Rengine re, String message) {
-
         logger.info("rShowMessage \"{}\"", message);
     }
 
     @Override
     public String rChooseFile(Rengine re, int newFile) {
-
         return null;
     }
 
     @Override
     public void rFlushConsole(Rengine re) {
-
         // Empty
     }
 

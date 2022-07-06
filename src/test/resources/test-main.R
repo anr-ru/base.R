@@ -18,6 +18,3 @@ str[2] <- "Hm-Hm";
 str[3] <- "Not Bad";
 
 dd <- funcC(dx);
-
-
-

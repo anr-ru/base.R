@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -23,6 +23,7 @@ import org.springframework.util.Assert;
 import ru.anr.base.ApplicationException;
 import ru.anr.base.services.BaseServiceImpl;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +52,8 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
     /**
      * {@inheritDoc}
      */
-    @Override
+    @PostConstruct
     public synchronized void init() {
-
-        super.init();
 
         if (engine == null) {
             logger.info("Starting R Engine ...");
@@ -75,11 +74,9 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
     public <S> Map<String, RResult> eval(Map<String, S> variables, List<String> scripts, String... outputNames) {
 
         Assert.notNull(engine, "R Engine not initialized");
-
         variables.forEach(this::assignVariable);
 
         String script = list(scripts).stream().map(this::getScript).collect(Collectors.joining("\n"));
-
         /*
          * Screen the " symbols
          */
@@ -115,7 +112,6 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      * @return Script data
      */
     private String getScript(String path) {
-
         return path.endsWith(".R") ? readAsString(path) : path;
     }
 
@@ -172,7 +168,6 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      * @return The resulted found class
      */
     public static Class<?> getItemClass(List<?> values) {
-
         return values.size() == 0 ? null : values.get(0).getClass();
     }
 

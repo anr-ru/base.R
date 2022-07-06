@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Tests for the {@link RService} service.
  *
- * @author
+ * @author Alexey Romanchuk
  * @created Sep 14, 2017
  */
 @ContextConfiguration(locations = {"classpath:tests-context.xml"}, inheritLocations = false)

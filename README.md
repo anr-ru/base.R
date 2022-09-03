@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/anr-ru/base.R.svg?branch=master)](https://travis-ci.org/anr-ru/base.R)
-
+[![Build Status](https://travis-ci.org/anr-ru/base.R.svg?branch=1.x)](https://travis-ci.org/anr-ru/base.R)
 
 ## A part of [Base.Platform Project](https://github.com/anr-ru/base.platform.parent)
 
@@ -13,6 +12,6 @@ You can check the results comparing to "pure" R invocation. Please run the follo
 directory:
 
 ```R
-R CMD BATCH ./test-as-script.R out.txt
+RCMDBATCH./test-as-script.Rout.txt
 ```
 

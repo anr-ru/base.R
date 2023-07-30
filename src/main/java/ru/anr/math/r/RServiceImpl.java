@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -39,9 +39,6 @@ import java.util.stream.Stream;
 
 public class RServiceImpl extends BaseServiceImpl implements RService {
 
-    /**
-     * The logger
-     */
     private static final Logger logger = LoggerFactory.getLogger(RServiceImpl.class);
 
     /**
@@ -49,9 +46,6 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
      */
     private static Rengine engine;
 
-    /**
-     * {@inheritDoc}
-     */
     @PostConstruct
     public synchronized void init() {
 
@@ -67,9 +61,6 @@ public class RServiceImpl extends BaseServiceImpl implements RService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <S> Map<String, RResult> eval(Map<String, S> variables, List<String> scripts, String... outputNames) {
 

@@ -9,13 +9,14 @@ cache:
   - "$HOME/.cache"
   
 env:
-  - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$JAVA_HOME/jre/lib:$R_HOME/site-library/rJava/jri:$LD_LIBRARY_PATH"
+  - R_HOME=/usr/lib/R
+  - LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$JAVA_HOME/jre/lib:$R_HOME/lib:$R_HOME/bin"
 
 before_install:
   - cp ./.mvn/ci-settings.xml $HOME/.m2/settings.xml
-  - wget --no-check-certificate https://dlcdn.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
-  - tar xzvf apache-maven-3.6.3-bin.tar.gz
-  - export PATH=`pwd`/apache-maven-3.6.3/bin:$PATH
+  - wget --no-check-certificate https://dlcdn.apache.org/maven/maven-3/3.9.3/binaries/apache-maven-3.9.3-bin.tar.gz
+  - tar xzvf apache-maven-3.9.3-bin.tar.gz
+  - export PATH=`pwd`/apache-maven-3.9.3/bin:$PATH
   - mvn -v
   - sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran35/'
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
@@ -23,6 +24,7 @@ before_install:
   - sudo apt-get install -y --allow-unauthenticated r-base r-base-dev r-base-core r-recommended r-cran-rjava
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
+  - ls -al ${R_HOME}/library/
 
 jobs:
   include:
@@ -32,4 +34,4 @@ jobs:
       script: "mvn -P ci deploy -DskipTests"
       on:
         tags: true
-        branch: master
+        branches: true

@@ -5,7 +5,7 @@
 
 ### Base.R
 
-Services for linking Java and R applications.
+Services for running R-scripts from Java applications.
 
 ```bash
 # 1. R_HOME and LD_LIBRARY_PATH must be properly set:

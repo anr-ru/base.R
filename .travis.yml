@@ -9,8 +9,7 @@ cache:
   - "$HOME/.cache"
   
 env:
-  - R_HOME=/usr/lib/R
-  - LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$JAVA_HOME/jre/lib:$R_HOME/lib:$R_HOME/bin"
+  - R_HOME=/usr/lib/R LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$JAVA_HOME/jre/lib:$R_HOME/lib:$R_HOME/bin"
 
 before_install:
   - cp ./.mvn/ci-settings.xml $HOME/.m2/settings.xml
@@ -24,7 +23,7 @@ before_install:
   - sudo apt-get install -y --allow-unauthenticated r-base r-base-dev r-base-core r-recommended r-cran-rjava
   - sudo R CMD javareconf
   - sudo Rscript ./setup.R
-  - ls -al ${R_HOME}/library/
+  - ls -al ${R_HOME}
 
 jobs:
   include:

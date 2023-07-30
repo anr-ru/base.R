@@ -59,7 +59,7 @@
                 <configuration>
                     <!--suppress UnresolvedMavenProperty -->
                     <!--argLine>-Djava.library.path=${R_HOME}/site-library/rJava/jri/</argLine-->
-                    <argLine>-Djava.library.path=${env.R_HOME}/library/rJava/jri</argLine>
+                    <argLine>-Djava.library.path=${env.R_HOME}/site-library/rJava/jri</argLine>
                 </configuration>
             </plugin>
         </plugins>
